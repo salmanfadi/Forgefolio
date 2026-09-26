@@ -1,0 +1,25 @@
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+
+# Build output and tool caches
+.next/
+dist/
+build/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Local logs
+*.log
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

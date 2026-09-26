@@ -1,0 +1,38 @@
+{
+  "slug": "data-analyst",
+  "title": "Data Analytics & Insights Roadmap",
+  "domain": "Data Analytics",
+  "description": "Master SQL querying, Python for data manipulation (Pandas, NumPy), data visualization (Tableau, Matplotlib), and business metric modeling.",
+  "version": "1.0.0",
+  "isPublished": true,
+  "modules": [
+    {
+      "id": "da-mod-1",
+      "title": "Module 1: Advanced SQL & Business Analytics",
+      "orderIndex": 1,
+      "steps": [
+        {
+          "id": "da-step-1",
+          "title": "Window Functions, CTEs & Aggregations",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "PostgreSQL Window Functions Guide",
+              "url": "https://mode.com/sql-tutorial/sql-window-functions",
+              "description": "Learn ROW_NUMBER, RANK, DENSE_RANK, NTILE, and lead/lag analytical queries."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Build a User Retention Cohort Analysis SQL Query",
+              "description": "Write a multi-step CTE query computing 30-day user retention cohorts.",
+              "difficulty": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

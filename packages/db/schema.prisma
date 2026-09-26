@@ -1,0 +1,306 @@
+// packages/db/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── USERS & AUTH ──────────────────────────────────────────────
+
+enum UserRole {
+  LEARNER
+  CONTRIBUTOR
+  MENTOR
+  SENIOR_MENTOR
+  DOMAIN_EXPERT
+  WORKING_PROFESSIONAL
+  ADMIN
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  username        String   @unique
+  avatarUrl       String?
+  bio             String?
+  role            UserRole @default(LEARNER)
+  githubId        String?  @unique
+  googleId        String?  @unique
+  githubToken     String?  // encrypted at rest
+  isPublic        Boolean  @default(false)
+  showReferralTab Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  progress             UserProgress[]
+  skills               UserSkill[]
+  projects             Project[]
+  verificationRequests VerificationRequest[] @relation("LearnerRequests")
+  mentorReviews        VerificationRequest[] @relation("MentorReviews")
+  employabilityScore   EmployabilityScore?
+  badges               UserBadge[]
+  contributions        RoadmapContribution[]
+  streaks              Streak[]
+  professional         WorkingProfessional?
+
+  @@index([role])
+  @@index([isPublic])
+}
+
+// ─── ROADMAPS ─────────────────────────────────────────────────
+
+model Roadmap {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  domain      String
+  description String
+  version     String   @default("1.0.0")
+  isPublished Boolean  @default(false)
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  modules       Module[]
+  contributions RoadmapContribution[]
+
+  @@index([slug])
+  @@index([isPublished])
+}
+
+model Module {
+  id         String  @id @default(cuid())
+  roadmapId  String
+  title      String
+  orderIndex Int
+  roadmap    Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  steps      Step[]
+
+  @@index([roadmapId])
+}
+
+model Step {
+  id               String         @id @default(cuid())
+  moduleId         String
+  title            String
+  theoryContent    Json           // Array of { type, title, url, description }
+  practicalContent Json           // Array of { type, title, description, difficulty }
+  orderIndex       Int
+  module           Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress         UserProgress[]
+
+  @@index([moduleId])
+}
+
+model UserProgress {
+  userId      String
+  stepId      String
+  completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  step        Step     @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  @@id([userId, stepId])
+  @@index([userId])
+}
+
+// ─── SKILLS & VERIFICATION ────────────────────────────────────
+
+enum VerificationLevel {
+  NONE
+  AI_VERIFIED
+  MENTOR_VERIFIED
+}
+
+model Skill {
+  id          String @id @default(cuid())
+  name        String @unique
+  domain      String
+  description String
+
+  userSkills           UserSkill[]
+  verificationRequests VerificationRequest[]
+
+  @@index([domain])
+}
+
+model UserSkill {
+  id                String            @id @default(cuid())
+  userId            String
+  skillId           String
+  verificationLevel VerificationLevel @default(NONE)
+  verifiedAt        DateTime?
+  verifiedById      String?
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill             Skill             @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([verificationLevel])
+}
+
+enum VerificationStatus {
+  PENDING
+  AI_REVIEW
+  MENTOR_ASSIGNED
+  CHALLENGE_ISSUED
+  COMPLETED
+  REJECTED
+}
+
+model VerificationRequest {
+  id                   String             @id @default(cuid())
+  learnerId            String
+  skillId              String
+  mentorId             String?
+  status               VerificationStatus @default(PENDING)
+  githubRepoUrl        String?
+  liveProjectUrl       String?
+  leetcodeUsername     String?
+  aiReport             Json?
+  challengeDescription String?
+  challengeDeadline    DateTime?
+  submittedAt          DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  learner              User               @relation("LearnerRequests", fields: [learnerId], references: [id], onDelete: Cascade)
+  mentor               User?              @relation("MentorReviews", fields: [mentorId], references: [id], onDelete: SetNull)
+  skill                Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  feedback             MentorFeedback[]
+
+  @@index([learnerId])
+  @@index([mentorId])
+  @@index([status])
+}
+
+model MentorFeedback {
+  id                    String              @id @default(cuid())
+  verificationRequestId String
+  comment               String
+  rating                Int?                // 1–5
+  createdAt             DateTime            @default(now())
+  request               VerificationRequest @relation(fields: [verificationRequestId], references: [id], onDelete: Cascade)
+}
+
+// ─── PROJECTS ─────────────────────────────────────────────────
+
+model Project {
+  id             String   @id @default(cuid())
+  userId         String
+  title          String
+  description    String
+  repoUrl        String?
+  liveUrl        String?
+  aiQualityScore Float?
+  aiReport       Json?
+  screenshotUrl  String?
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─── EMPLOYABILITY SCORE ──────────────────────────────────────
+
+model EmployabilityScore {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  totalScore Float    @default(0)
+  breakdown  Json     // { roadmapCompletion, verifiedSkills, githubActivity, leetcode, mentorRatings, projectQuality }
+  computedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([totalScore])
+}
+
+// ─── GAMIFICATION ─────────────────────────────────────────────
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String
+  iconUrl     String
+  criteria    Json
+  userBadges  UserBadge[]
+}
+
+model UserBadge {
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, badgeId])
+}
+
+model Streak {
+  id       String   @id @default(cuid())
+  userId   String
+  date     DateTime @db.Date
+  activity String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+// ─── COMMUNITY CONTRIBUTIONS ──────────────────────────────────
+
+enum ContributionStatus {
+  OPEN
+  APPROVED
+  REJECTED
+}
+
+model RoadmapContribution {
+  id           String             @id @default(cuid())
+  userId       String
+  roadmapId    String
+  type         String             // add_resource | edit_step | new_module
+  contentDiff  Json
+  status       ContributionStatus @default(OPEN)
+  reviewedById String?
+  reviewNote   String?
+  createdAt    DateTime           @default(now())
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap      Roadmap            @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@index([roadmapId, status])
+}
+
+// ─── V2: REFERRAL CIRCLE ──────────────────────────────────────
+
+model WorkingProfessional {
+  id              String           @id @default(cuid())
+  userId          String           @unique
+  linkedinUrl     String
+  company         String
+  designation     String
+  domain          String
+  verifiedAt      DateTime         @default(now())
+  isActive        Boolean          @default(true)
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contactMessages ContactMessage[]
+
+  @@index([isActive])
+}
+
+model ContactMessage {
+  id               String              @id @default(cuid())
+  professionalId   String
+  learnerId        String
+  message          String
+  isReferralIntent Boolean             @default(false)
+  sentAt           DateTime            @default(now())
+  isSpam           Boolean             @default(false)
+  spamReportCount  Int                 @default(0)
+  professional     WorkingProfessional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+
+  @@index([professionalId])
+  @@index([learnerId])
+}

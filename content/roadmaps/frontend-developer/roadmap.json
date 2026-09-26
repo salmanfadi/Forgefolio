@@ -1,0 +1,136 @@
+{
+  "slug": "frontend-developer",
+  "title": "Frontend Engineering Roadmap",
+  "domain": "Frontend Development",
+  "description": "Master modern HTML/CSS, JavaScript ES6+, React, Next.js, TypeScript, state management, web performance, and responsive UI design.",
+  "version": "1.0.0",
+  "isPublished": true,
+  "modules": [
+    {
+      "id": "fe-mod-1",
+      "title": "Module 1: Web Fundamentals (HTML5, CSS3, Flexbox & Grid)",
+      "orderIndex": 1,
+      "steps": [
+        {
+          "id": "fe-step-1",
+          "title": "Semantic HTML5 & Accessibility (WCAG 2.2)",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "MDN: Semantic HTML Guide",
+              "url": "https://developer.mozilla.org/en-US/docs/Glossary/Semantics",
+              "description": "Learn accessible markup using main, nav, article, section, and proper heading hierarchy."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Build a Accessible Product Landing Page Shell",
+              "description": "Create a fully accessible HTML document with zero WCAG contrast or landmark errors.",
+              "difficulty": "easy"
+            }
+          ]
+        },
+        {
+          "id": "fe-step-2",
+          "title": "CSS3 Layouts: Flexbox & Grid Deep Dive",
+          "orderIndex": 2,
+          "theoryContent": [
+            {
+              "type": "video",
+              "title": "CSS Grid & Flexbox Masterclass",
+              "url": "https://youtube.com/watch?v=grid-flex",
+              "description": "Understand 12-column layouts, auto-fit minmax, and flex items alignment."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "practice",
+              "title": "Implement a 12-Column Responsive Dashboard Layout",
+              "description": "Build a responsive CSS Grid container that collapses gracefully to single-column on mobile.",
+              "difficulty": "medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-mod-2",
+      "title": "Module 2: Modern JavaScript (ES6+)",
+      "orderIndex": 2,
+      "steps": [
+        {
+          "id": "fe-step-3",
+          "title": "JavaScript: Closures, Scope & Execution Context",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "Understanding JS Closures and Lexical Environment",
+              "url": "https://javascript.info/closure",
+              "description": "Deep dive into variable scopes, function environment records, and closure patterns."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Implement a Custom Event Emitter & Memoization Cache",
+              "description": "Create a memoized function wrapper and event emitter using pure JS closures.",
+              "difficulty": "medium"
+            }
+          ]
+        },
+        {
+          "id": "fe-step-4",
+          "title": "Asynchronous JS: Promises, Async/Await & Event Loop",
+          "orderIndex": 2,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "The JavaScript Event Loop Visualized",
+              "url": "https://dev.to/eventloop",
+              "description": "Master microtasks, macrotasks, Promise chaining, and abort controllers."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "practice",
+              "title": "Build a Resilient API Fetch Wrapper with Retries",
+              "description": "Implement exponential backoff and timeout aborting for async requests.",
+              "difficulty": "medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-mod-3",
+      "title": "Module 3: React & Next.js App Router",
+      "orderIndex": 3,
+      "steps": [
+        {
+          "id": "fe-step-5",
+          "title": "React Server Components & Next.js 14 Fundamentals",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "docs",
+              "title": "Next.js App Router Documentation",
+              "url": "https://nextjs.org/docs/app",
+              "description": "Learn Server Components vs Client Components, layouts, routing, and data fetching."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Build a Full-Stack Portfolio App with Next.js 14",
+              "description": "Create a Next.js App Router application with SSR and dynamic route handlers.",
+              "difficulty": "hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

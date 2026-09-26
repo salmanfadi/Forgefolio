@@ -1,0 +1,230 @@
+/* SkillPath Design Tokens
+ * Source of truth for all colours, spacing, typography, radius, elevation, and motion.
+ * Never hardcode values in components — always use var(--token-name).
+ * Light mode in :root. Dark mode in [data-theme="dark"].
+ */
+
+:root {
+
+  /* ── BACKGROUNDS ─────────────────────────────────────────────────────────── */
+  --bg-base:           #F7F8F5;                   /* Page shell */
+  --bg-surface:        #FFFFFF;                   /* Sidebar, topbar */
+  --bg-raised:         #FFFFFF;                   /* Cards */
+  --bg-overlay:        #F0F4EE;                   /* Hover fills */
+  --bg-primary:        rgba(22, 163, 74, 0.08);   /* Active nav, CTA tint */
+  --bg-primary-hover:  rgba(22, 163, 74, 0.14);   /* Hover on primary-tinted areas */
+  --bg-success:        rgba(22, 163, 74, 0.08);
+  --bg-warning:        rgba(217, 119, 6, 0.08);
+  --bg-info:           rgba(79, 70, 229, 0.08);   /* AI / theory / indigo */
+  --bg-danger:         rgba(220, 38, 38, 0.08);
+
+  /* ── SEMANTIC COLOUR TOKENS ──────────────────────────────────────────────── */
+  --tok-primary:        #16A34A;                  /* Emerald-600 — main action */
+  --tok-primary-dark:   #15803D;                  /* Emerald-700 — hover */
+  --tok-primary-light:  #DCFCE7;                  /* Emerald-100 — chip bg */
+  --tok-primary-border: rgba(22, 163, 74, 0.25);
+
+  --tok-success:        #16A34A;
+  --tok-success-bg:     #DCFCE7;
+
+  --tok-warning:        #D97706;                  /* Amber-600 */
+  --tok-warning-bg:     #FEF3C7;                  /* Amber-100 */
+
+  --tok-info:           #4F46E5;                  /* Indigo-600 — AI features */
+  --tok-info-bg:        #EEF2FF;                  /* Indigo-50 */
+
+  --tok-danger:         #DC2626;                  /* Red-600 */
+  --tok-danger-bg:      #FEE2E2;                  /* Red-100 */
+
+  /* ── TEXT ────────────────────────────────────────────────────────────────── */
+  --txt-primary:        #111827;                  /* Gray-900 — headings, values. 16:1 on white */
+  --txt-secondary:      #4B5563;                  /* Gray-600 — body text. 7.2:1 on white */
+  --txt-tertiary:       #9CA3AF;                  /* Gray-400 — metadata only. 3.4:1 — decorative */
+  --txt-accent:         #16A34A;                  /* Active state text, links */
+  --txt-success:        #16A34A;
+  --txt-warning:        #D97706;                  /* 4.5:1 on white — use weight 500 */
+  --txt-info:           #4F46E5;                  /* 8.1:1 on white */
+  --txt-danger:         #DC2626;                  /* 5.9:1 on white */
+  --txt-disabled:       #D1D5DB;                  /* Gray-300 */
+  --txt-on-primary:     #FFFFFF;                  /* Text on filled emerald elements */
+
+  /* ── BORDERS ─────────────────────────────────────────────────────────────── */
+  --border-subtle:      #E5E7EB;                  /* Card borders, dividers */
+  --border-default:     #D1D5DB;                  /* Input fields, buttons at rest */
+  --border-strong:      #9CA3AF;                  /* Hover borders */
+  --border-accent:      rgba(22, 163, 74, 0.35);  /* Active nav, CTA band */
+  --border-success:     rgba(22, 163, 74, 0.20);
+  --border-warning:     rgba(217, 119, 6, 0.20);
+  --border-info:        rgba(79, 70, 229, 0.20);
+  --border-danger:      rgba(220, 38, 38, 0.30);
+
+  /* Focus ring — applied via :focus-visible on ALL interactive elements */
+  --border-focus:       0 0 0 3px rgba(22, 163, 74, 0.40);
+
+  /* ── SPACING — 8-POINT SYSTEM ────────────────────────────────────────────── */
+  /* Never use values outside this list. Intermediate values (e.g. 10px) are forbidden. */
+  --sp-4:  4px;
+  --sp-8:  8px;
+  --sp-16: 16px;
+  --sp-24: 24px;
+  --sp-32: 32px;
+  --sp-40: 40px;
+  --sp-48: 48px;
+  --sp-64: 64px;
+  --sp-80: 80px;
+  --sp-96: 96px;
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────────────────────── */
+  /* Font sizes — only these values are permitted */
+  --type-xs:   12px;   /* Nav group labels, badges, metadata */
+  --type-sm:   14px;   /* Body text, nav items, task text, form labels */
+  --type-base: 16px;   /* Card titles, CTA text, page subtitles */
+  --type-lg:   20px;   /* Modal headings, empty state headings */
+  --type-xl:   24px;   /* Stat values (score, XP count) */
+  --type-2xl:  32px;   /* Section titles on landing page */
+  --type-3xl:  40px;   /* Landing page hero headline */
+
+  /* Font weights — only 400 and 500. Never 600 or 700. */
+  --weight-normal: 400;
+  --weight-medium: 500;
+
+  /* Line heights */
+  --lh-tight:  1.3;
+  --lh-base:   1.5;    /* Default for all body text */
+  --lh-loose:  1.7;    /* Long-form content, explanatory text */
+
+  /* ── BORDER RADIUS ───────────────────────────────────────────────────────── */
+  --radius-sm:   6px;      /* Badges, pills, tags */
+  --radius-md:   8px;      /* Buttons, inputs, nav items, module icons */
+  --radius-lg:   12px;     /* Cards, panels, modals */
+  --radius-xl:   16px;     /* Feature cards on landing page */
+  --radius-full: 9999px;   /* Streak pill, avatars, score ring */
+
+  /* ── ELEVATION ───────────────────────────────────────────────────────────── */
+  /* Elevation in light mode = background colour + border, not shadows */
+  --elev-none:   var(--bg-base);     /* Page bg */
+  --elev-small:  var(--bg-surface);  /* Sidebar, topbar */
+  --elev-medium: var(--bg-raised);   /* Cards */
+  --elev-large:  var(--bg-overlay);  /* Hover fills */
+
+  /* ── MOTION ──────────────────────────────────────────────────────────────── */
+  --duration-fast:   150ms;
+  --duration-base:   200ms;
+  --duration-slow:   300ms;
+  --easing-default:  ease;
+}
+
+
+/* ── DARK MODE ───────────────────────────────────────────────────────────────
+ * Applied by ThemeToggle.tsx:
+ *   document.documentElement.setAttribute('data-theme', 'dark')
+ * Persisted in localStorage under key: skillpath_theme
+ * Applied before first paint in root layout to prevent flash.
+ */
+[data-theme="dark"] {
+  --bg-base:           #0E1A12;
+  --bg-surface:        #122017;
+  --bg-raised:         #172B1E;
+  --bg-overlay:        #1E3828;
+  --bg-primary:        rgba(34, 197, 94, 0.10);
+  --bg-primary-hover:  rgba(34, 197, 94, 0.16);
+  --bg-success:        rgba(34, 197, 94, 0.12);
+  --bg-warning:        rgba(252, 211, 77, 0.10);
+  --bg-info:           rgba(129, 140, 248, 0.10);
+  --bg-danger:         rgba(248, 113, 113, 0.10);
+
+  --tok-primary:        #22C55E;
+  --tok-primary-dark:   #16A34A;
+  --tok-primary-light:  rgba(34, 197, 94, 0.15);
+  --tok-primary-border: rgba(34, 197, 94, 0.30);
+  --tok-success:        #22C55E;
+  --tok-success-bg:     rgba(34, 197, 94, 0.15);
+  --tok-warning:        #FCD34D;
+  --tok-warning-bg:     rgba(252, 211, 77, 0.12);
+  --tok-info:           #818CF8;
+  --tok-info-bg:        rgba(129, 140, 248, 0.12);
+  --tok-danger:         #F87171;
+  --tok-danger-bg:      rgba(248, 113, 113, 0.12);
+
+  --txt-primary:        rgba(255, 255, 255, 0.92);
+  --txt-secondary:      rgba(255, 255, 255, 0.60);
+  --txt-tertiary:       rgba(255, 255, 255, 0.35);
+  --txt-accent:         #22C55E;
+  --txt-success:        #22C55E;
+  --txt-warning:        #FCD34D;
+  --txt-info:           #818CF8;
+  --txt-danger:         #F87171;
+  --txt-disabled:       rgba(255, 255, 255, 0.25);
+  --txt-on-primary:     #FFFFFF;
+
+  --border-subtle:      rgba(255, 255, 255, 0.07);
+  --border-default:     rgba(255, 255, 255, 0.12);
+  --border-strong:      rgba(255, 255, 255, 0.22);
+  --border-accent:      rgba(34, 197, 94, 0.30);
+  --border-success:     rgba(34, 197, 94, 0.20);
+  --border-warning:     rgba(252, 211, 77, 0.20);
+  --border-info:        rgba(129, 140, 248, 0.20);
+  --border-danger:      rgba(248, 113, 113, 0.20);
+  --border-focus:       0 0 0 3px rgba(34, 197, 94, 0.40);
+}
+
+
+/* ── GLOBAL BASE STYLES ──────────────────────────────────────────────────────
+ * Minimal base — components handle the rest.
+ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--type-sm);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: var(--lh-base);
+  color: var(--txt-primary);
+  background-color: var(--bg-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus ring — applied universally via :focus-visible */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--border-focus);
+}
+
+/* Reduced motion — disables ALL transitions for users who prefer no motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Transitions must only be declared inside this media query */
+@media (prefers-reduced-motion: no-preference) {
+  .transition-colors {
+    transition: background-color var(--duration-fast) var(--easing-default),
+                color var(--duration-fast) var(--easing-default),
+                border-color var(--duration-fast) var(--easing-default);
+  }
+  .transition-shadow {
+    transition: box-shadow var(--duration-base) var(--easing-default);
+  }
+  .transition-progress {
+    transition: width var(--duration-slow) var(--easing-default);
+  }
+}
+
+/* Visually hidden — screen reader accessible, visually hidden */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
