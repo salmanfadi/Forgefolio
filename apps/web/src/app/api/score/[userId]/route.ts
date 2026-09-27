@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { ApiResponse, EmployabilityScoreData } from '@skillpath/types'
+import type { ApiResponse, EmployabilityScoreData } from '@forgefolio/types'
 import { computeEmployabilityScore } from '@/lib/score'
 
 export async function GET(

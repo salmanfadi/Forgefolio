@@ -7,7 +7,7 @@ export const ThemeToggle: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('skillpath_theme') as 'light' | 'dark' | null
+    const savedTheme = localStorage.getItem('forgefolio_theme') as 'light' | 'dark' | null
     if (savedTheme) {
       setTheme(savedTheme)
       document.documentElement.setAttribute('data-theme', savedTheme)
@@ -21,7 +21,7 @@ export const ThemeToggle: React.FC = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(nextTheme)
     document.documentElement.setAttribute('data-theme', nextTheme)
-    localStorage.setItem('skillpath_theme', nextTheme)
+    localStorage.setItem('forgefolio_theme', nextTheme)
   }
 
   return (

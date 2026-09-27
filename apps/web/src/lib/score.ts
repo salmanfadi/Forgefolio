@@ -1,4 +1,4 @@
-import type { ScoreBreakdown } from '@skillpath/types'
+import type { ScoreBreakdown } from '@forgefolio/types'
 
 export function computeEmployabilityScore(breakdown: ScoreBreakdown): number {
   const weights = {

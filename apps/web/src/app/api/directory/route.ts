@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { ApiResponse } from '@skillpath/types'
+import type { ApiResponse } from '@forgefolio/types'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)

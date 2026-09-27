@@ -1,5 +1,5 @@
 {
-  "name": "@skillpath/workers",
+  "name": "@forgefolio/workers",
   "version": "0.1.0",
   "private": true,
   "main": "index.ts",
@@ -8,8 +8,8 @@
     "dev": "ts-node-dev --respawn --transpile-only index.ts"
   },
   "dependencies": {
-    "@skillpath/types": "workspace:*",
-    "@skillpath/db": "workspace:*",
+    "@forgefolio/types": "workspace:*",
+    "@forgefolio/db": "workspace:*",
     "bullmq": "^5.7.0",
     "ioredis": "^5.3.2"
   },

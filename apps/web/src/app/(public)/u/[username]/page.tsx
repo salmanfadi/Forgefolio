@@ -93,7 +93,7 @@ export default function SkillPassportPage() {
           <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--bg-primary)', color: 'var(--tok-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShieldCheck size={22} aria-hidden="true" />
           </div>
-          <span style={{ fontSize: 'var(--type-base)', fontWeight: 'var(--weight-medium)' }}>SkillPath Passport</span>
+          <span style={{ fontSize: 'var(--type-base)', fontWeight: 'var(--weight-medium)' }}>Forgefolio Passport</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-16)' }}>
           <ThemeToggle />
@@ -238,7 +238,7 @@ export default function SkillPassportPage() {
 
               {sentSuccess ? (
                 <div style={{ padding: 'var(--sp-16)', backgroundColor: 'var(--tok-success-bg)', color: 'var(--txt-success)', borderRadius: 'var(--radius-md)' }}>
-                  Message sent securely via SkillPath Relay!
+                  Message sent securely via Forgefolio Relay!
                 </div>
               ) : (
                 <form onSubmit={handleSendContact} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-16)' }}>
@@ -247,7 +247,7 @@ export default function SkillPassportPage() {
                     <textarea
                       rows={4}
                       required
-                      placeholder="Hi Alex, I saw your verified React & TypeScript project on SkillPath and would like to refer you for a Frontend Engineer role at..."
+                      placeholder="Hi Alex, I saw your verified React & TypeScript project on Forgefolio and would like to refer you for a Frontend Engineer role at..."
                       value={contactMessage}
                       onChange={(e) => setContactMessage(e.target.value)}
                       style={{ padding: 'var(--sp-12)', fontSize: 'var(--type-sm)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-default)', backgroundColor: 'var(--bg-base)', color: 'var(--txt-primary)', fontFamily: 'inherit' }}

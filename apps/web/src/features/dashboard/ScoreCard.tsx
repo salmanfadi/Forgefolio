@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ScoreBreakdown } from '@skillpath/types'
+import type { ScoreBreakdown } from '@forgefolio/types'
 import { ProgressBar } from '@/shared/components/ui/ProgressBar'
 
 export interface ScoreCardProps {

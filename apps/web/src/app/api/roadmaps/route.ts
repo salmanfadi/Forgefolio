@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import type { ApiResponse } from '@skillpath/types'
+import type { ApiResponse } from '@forgefolio/types'
 import { getRoadmaps, type RoadmapContent } from '@/lib/roadmaps'
 
 export async function GET() {

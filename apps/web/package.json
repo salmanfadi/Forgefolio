@@ -1,5 +1,5 @@
 {
-  "name": "@skillpath/web",
+  "name": "@forgefolio/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,8 +10,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@skillpath/types": "workspace:*",
-    "@skillpath/db": "workspace:*",
+    "@forgefolio/types": "workspace:*",
+    "@forgefolio/db": "workspace:*",
     "@prisma/client": "^5.12.0",
     "next": "^14.2.0",
     "react": "^18.3.0",

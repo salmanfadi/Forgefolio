@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import type { ApiResponse } from '@skillpath/types'
+import type { ApiResponse } from '@forgefolio/types'
 
 const ContactSchema = z.object({
   message: z.string().min(10).max(500),

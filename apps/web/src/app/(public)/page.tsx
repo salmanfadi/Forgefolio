@@ -43,7 +43,7 @@ export default function LandingPage() {
           >
             <ShieldCheck size={22} aria-hidden="true" />
           </div>
-          <span style={{ fontSize: 'var(--type-base)', fontWeight: 'var(--weight-medium)' }}>SkillPath</span>
+          <span style={{ fontSize: 'var(--type-base)', fontWeight: 'var(--weight-medium)' }}>Forgefolio</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-16)' }}>
@@ -96,7 +96,7 @@ export default function LandingPage() {
             lineHeight: 'var(--lh-loose)',
           }}
         >
-          SkillPath helps unemployed graduates follow structured 80% practical roadmaps, complete verified challenges, compute an Employability Score, and get discovered by working professionals for job referrals.
+          Forgefolio helps unemployed graduates follow structured 80% practical roadmaps, complete verified challenges, compute an Employability Score, and get discovered by working professionals for job referrals.
         </p>
 
         <div style={{ display: 'flex', gap: 'var(--sp-16)', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -188,7 +188,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: 'var(--sp-32) var(--sp-24)', backgroundColor: 'var(--bg-surface)', textAlign: 'center', fontSize: 'var(--type-xs)', color: 'var(--txt-tertiary)' }}>
-        © 2026 SkillPath · Open Source Career Acceleration Platform · DPDPA 2023 Compliant
+        © 2026 Forgefolio · Open Source Career Acceleration Platform · DPDPA 2023 Compliant
       </footer>
     </div>
   )

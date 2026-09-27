@@ -74,7 +74,7 @@ export const Sidebar: React.FC = () => {
         </div>
         <div>
           <h1 style={{ fontSize: 'var(--type-base)', fontWeight: 'var(--weight-medium)', color: 'var(--txt-primary)', lineHeight: '1.2' }}>
-            SkillPath
+            Forgefolio
           </h1>
           <span style={{ fontSize: 'var(--type-xs)', color: 'var(--txt-accent)' }}>
             Career Accelerator

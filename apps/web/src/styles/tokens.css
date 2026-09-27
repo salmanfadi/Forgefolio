@@ -1,4 +1,4 @@
-/* SkillPath Design Tokens
+/* Forgefolio Design Tokens
  * Source of truth for all colours, spacing, typography, radius, elevation, and motion.
  * Never hardcode values in components — always use var(--token-name).
  * Light mode in :root. Dark mode in [data-theme="dark"].
@@ -118,7 +118,7 @@
 /* ── DARK MODE ───────────────────────────────────────────────────────────────
  * Applied by ThemeToggle.tsx:
  *   document.documentElement.setAttribute('data-theme', 'dark')
- * Persisted in localStorage under key: skillpath_theme
+ * Persisted in localStorage under key: forgefolio_theme
  * Applied before first paint in root layout to prevent flash.
  */
 [data-theme="dark"] {

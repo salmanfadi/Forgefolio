@@ -1,4 +1,4 @@
-// Shared TypeScript types for SkillPath
+// Shared TypeScript types for Forgefolio
 
 export type UserRole =
   | 'LEARNER'
