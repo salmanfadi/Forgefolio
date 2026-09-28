@@ -1,0 +1,38 @@
+{
+  "slug": "devops-engineer",
+  "title": "DevOps & Cloud Infrastructure Roadmap",
+  "domain": "DevOps Engineering",
+  "description": "Master Docker containerization, Kubernetes orchestration, CI/CD pipelines, Infrastructure as Code (Terraform), and Observability.",
+  "version": "1.0.0",
+  "isPublished": true,
+  "modules": [
+    {
+      "id": "do-mod-1",
+      "title": "Module 1: Containerization & Orchestration",
+      "orderIndex": 1,
+      "steps": [
+        {
+          "id": "do-step-1",
+          "title": "Docker Multi-stage Builds & Security Best Practices",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "docs",
+              "title": "Docker Multi-stage Build Documentation",
+              "url": "https://docs.docker.com/build/building/multi-stage",
+              "description": "Optimize Docker image sizes and minimize security attack surfaces."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Containerize a Node.js + Redis Microservice Setup",
+              "description": "Write a multi-stage Dockerfile and docker-compose file with non-root security context.",
+              "difficulty": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

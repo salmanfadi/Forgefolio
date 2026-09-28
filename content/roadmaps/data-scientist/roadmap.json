@@ -1,0 +1,38 @@
+{
+  "slug": "data-scientist",
+  "title": "Data Science & ML Engineering Roadmap",
+  "domain": "Data Science",
+  "description": "Master Applied Statistics, Machine Learning (Scikit-learn), Feature Engineering, Deep Learning fundamentals, and Model Deployment.",
+  "version": "1.0.0",
+  "isPublished": true,
+  "modules": [
+    {
+      "id": "ds-mod-1",
+      "title": "Module 1: Statistical Foundations & Machine Learning",
+      "orderIndex": 1,
+      "steps": [
+        {
+          "id": "ds-step-1",
+          "title": "Supervised Learning: Classification & Regression",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "Scikit-Learn Model Evaluation Metrics",
+              "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+              "description": "Precision, Recall, F1-Score, ROC-AUC curves, and cross-validation techniques."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Train and Evaluate a Customer Churn Prediction Model",
+              "description": "Preprocess tabular features, balance classes, and deploy a Random Forest classifier.",
+              "difficulty": "hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

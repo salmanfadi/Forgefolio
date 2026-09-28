@@ -1,0 +1,66 @@
+{
+  "slug": "backend-developer",
+  "title": "Backend Systems Engineering Roadmap",
+  "domain": "Backend Development",
+  "description": "Master Node.js, Express/Fastify, PostgreSQL database design, REST/GraphQL APIs, authentication, caching with Redis, and job queues.",
+  "version": "1.0.0",
+  "isPublished": true,
+  "modules": [
+    {
+      "id": "be-mod-1",
+      "title": "Module 1: Node.js Runtime & Async I/O",
+      "orderIndex": 1,
+      "steps": [
+        {
+          "id": "be-step-1",
+          "title": "Node.js Streams, Buffers & Event Loop",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "docs",
+              "title": "Node.js Stream API Docs",
+              "url": "https://nodejs.org/api/stream.html",
+              "description": "Understand Readable, Writable, Transform streams and backpressure handling."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "build",
+              "title": "Build a Streaming Log Processing Pipeline",
+              "description": "Create a Node.js CLI tool that parses multi-gigabyte log files using memory-efficient streams.",
+              "difficulty": "medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "be-mod-2",
+      "title": "Module 2: Database Design & ORMs",
+      "orderIndex": 2,
+      "steps": [
+        {
+          "id": "be-step-2",
+          "title": "PostgreSQL Indexing, Transactions & Prisma ORM",
+          "orderIndex": 1,
+          "theoryContent": [
+            {
+              "type": "article",
+              "title": "PostgreSQL Query Optimization & Indexes",
+              "url": "https://use-the-index-luke.com",
+              "description": "Learn B-tree indexes, ACID transactions, isolation levels, and execution plans."
+            }
+          ],
+          "practicalContent": [
+            {
+              "type": "practice",
+              "title": "Design a Scalable Relational Schema with Prisma",
+              "description": "Model e-commerce orders with transaction isolation and compound indexes.",
+              "difficulty": "hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

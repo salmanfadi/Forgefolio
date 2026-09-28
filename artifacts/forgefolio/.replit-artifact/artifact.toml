@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Forgefolio"
+description = "Career acceleration app with practical roadmaps, projects, skill verification, learner dashboard, and referral directory."
+version = "1.0.0"
+id = "artifacts/forgefolio"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25210
+
+[services.development]
+run = "pnpm --filter @workspace/forgefolio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/forgefolio", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/forgefolio/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25210"
+BASE_PATH = "/"
