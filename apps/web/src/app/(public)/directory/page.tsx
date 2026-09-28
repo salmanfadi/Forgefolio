@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ShieldCheck, Search, Filter, Mail, Award, CheckCircle2, ArrowRight } from 'lucide-react'
 import { Avatar } from '@/shared/components/ui/Avatar'
@@ -8,61 +8,44 @@ import { Badge } from '@/shared/components/ui/Badge'
 import { Button } from '@/shared/components/ui/Button'
 import { Input } from '@/shared/components/ui/Input'
 import { ThemeToggle } from '@/shared/components/layout/ThemeToggle'
+import type { DirectoryCandidate } from '@forgefolio/types'
 
 export default function ReferralDirectoryPage() {
   const [search, setSearch] = useState('')
   const [selectedDomain, setSelectedDomain] = useState('All')
   const [minScore, setMinScore] = useState(70)
+  const [sort, setSort] = useState<'score' | 'completion' | 'verified'>('score')
+  const [candidates, setCandidates] = useState<DirectoryCandidate[]>([])
+  const [page, setPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const candidates = [
-    {
-      username: 'alex_dev',
-      name: 'Alex Sharma',
-      role: 'Frontend Developer',
-      domain: 'Frontend Development',
-      score: 78.5,
-      roadmapPercent: 60,
-      topSkills: ['JavaScript ES6+', 'React.js', 'TypeScript', 'CSS Grid'],
-      verifiedSkillsCount: 2,
-    },
-    {
-      username: 'priya_backend',
-      name: 'Priya Verma',
-      role: 'Backend Systems Engineer',
-      domain: 'Backend Development',
-      score: 84.0,
-      roadmapPercent: 85,
-      topSkills: ['Node.js', 'PostgreSQL', 'Prisma ORM', 'Redis', 'Docker'],
-      verifiedSkillsCount: 4,
-    },
-    {
-      username: 'rohit_data',
-      name: 'Rohit Kumar',
-      role: 'Data Analyst',
-      domain: 'Data Analytics',
-      score: 72.0,
-      roadmapPercent: 50,
-      topSkills: ['SQL Window Functions', 'Python Pandas', 'Tableau'],
-      verifiedSkillsCount: 2,
-    },
-    {
-      username: 'sneha_ml',
-      name: 'Sneha Patel',
-      role: 'Data Scientist',
-      domain: 'Data Science',
-      score: 81.5,
-      roadmapPercent: 75,
-      topSkills: ['Scikit-learn', 'Feature Engineering', 'Random Forest'],
-      verifiedSkillsCount: 3,
-    },
-  ]
+  useEffect(() => {
+    const controller = new AbortController()
+    setIsLoading(true)
 
-  const filtered = candidates.filter((c) => {
-    const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase()) || c.role.toLowerCase().includes(search.toLowerCase()) || c.topSkills.some((s) => s.toLowerCase().includes(search.toLowerCase()))
-    const matchesDomain = selectedDomain === 'All' || c.domain === selectedDomain
-    const matchesScore = c.score >= minScore
-    return matchesSearch && matchesDomain && matchesScore
-  })
+    const params = new URLSearchParams({
+      minScore: String(minScore),
+      sort,
+      page: String(page),
+      pageSize: '20',
+    })
+
+    if (selectedDomain !== 'All') params.set('domain', selectedDomain)
+    if (search.trim()) params.set('search', search.trim())
+
+    fetch(`/api/directory?${params.toString()}`, { signal: controller.signal })
+      .then((response) => response.json())
+      .then((payload) => {
+        const data = Array.isArray(payload?.data) ? payload.data : []
+        setCandidates(data)
+      })
+      .catch(() => setCandidates([]))
+      .finally(() => setIsLoading(false))
+
+    return () => controller.abort()
+  }, [search, selectedDomain, minScore, sort, page])
+
+  const filtered = useMemo(() => candidates, [candidates])
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-base)', color: 'var(--txt-primary)' }}>
@@ -148,6 +131,24 @@ export default function ReferralDirectoryPage() {
               <option value="Data Science">Data Science</option>
             </select>
 
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as 'score' | 'completion' | 'verified')}
+              style={{
+                minHeight: '44px',
+                padding: '0 var(--sp-16)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-default)',
+                backgroundColor: 'var(--bg-surface)',
+                color: 'var(--txt-primary)',
+                fontSize: 'var(--type-sm)',
+              }}
+            >
+              <option value="score">Sort: Score</option>
+              <option value="completion">Sort: Completion</option>
+              <option value="verified">Sort: Verified Skills</option>
+            </select>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-8)', fontSize: 'var(--type-xs)', color: 'var(--txt-secondary)' }}>
               <span>Min Score: {minScore}</span>
               <input
@@ -164,7 +165,15 @@ export default function ReferralDirectoryPage() {
 
         {/* Candidate Cards Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 'var(--sp-24)' }}>
-          {filtered.map((c) => (
+          {isLoading ? (
+            <div style={{ gridColumn: '1 / -1', padding: 'var(--sp-24)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-surface)', color: 'var(--txt-secondary)' }}>
+              Loading candidates…
+            </div>
+          ) : filtered.length === 0 ? (
+            <div style={{ gridColumn: '1 / -1', padding: 'var(--sp-24)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-surface)', color: 'var(--txt-secondary)' }}>
+              No public candidates match the current filters. Try lowering the score threshold or broadening the search.
+            </div>
+          ) : filtered.map((c) => (
             <div
               key={c.username}
               style={{

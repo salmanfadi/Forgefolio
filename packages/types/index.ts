@@ -179,6 +179,29 @@ export interface WorkingProfessionalData {
   avatarUrl?: string | null;
 }
 
+export interface DirectoryCandidate {
+  id: string;
+  username: string;
+  name: string;
+  role: string;
+  domain: string;
+  score: number;
+  roadmapPercent: number;
+  topSkills: string[];
+  verifiedSkillsCount: number;
+  isPublic: boolean;
+}
+
+export interface DirectoryQuery {
+  domain?: string | null;
+  minScore?: number;
+  skill?: string | null;
+  search?: string | null;
+  sort?: 'score' | 'completion' | 'verified';
+  page?: number;
+  pageSize?: number;
+}
+
 export interface ApiResponse<T> {
   data?: T;
   error?: {

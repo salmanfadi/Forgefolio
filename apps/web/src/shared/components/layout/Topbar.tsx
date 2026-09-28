@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Flame, Bell } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -9,7 +9,34 @@ export interface TopbarProps {
   subtitle?: string
 }
 
+type NotificationItem = {
+  id: string
+  userId: string
+  type: 'verification_status' | 'challenge' | 'badge' | 'contribution_review'
+  message: string
+  read: boolean
+  createdAt: string
+}
+
 export const Topbar: React.FC<TopbarProps> = ({ title = 'Dashboard', subtitle }) => {
+  const [notifications, setNotifications] = useState<NotificationItem[]>([])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch('/api/notifications?userId=learner-123', { signal: controller.signal })
+      .then((response) => response.json())
+      .then((payload) => {
+        const nextNotifications = Array.isArray(payload?.data) ? payload.data : []
+        setNotifications(nextNotifications)
+      })
+      .catch(() => setNotifications([]))
+
+    return () => controller.abort()
+  }, [])
+
+  const unreadCount = notifications.filter((notification) => !notification.read).length
+
   return (
     <header
       style={{
@@ -37,7 +64,6 @@ export const Topbar: React.FC<TopbarProps> = ({ title = 'Dashboard', subtitle })
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-16)' }}>
-        {/* Streak Pill */}
         <div
           role="status"
           aria-label="Active 5 day learning streak"
@@ -59,9 +85,8 @@ export const Topbar: React.FC<TopbarProps> = ({ title = 'Dashboard', subtitle })
           <span>5 Day Streak</span>
         </div>
 
-        {/* Notifications Icon Button */}
         <button
-          aria-label="Notifications (2 unread)"
+          aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : 'Notifications (0 unread)'}
           style={{
             width: '44px',
             height: '44px',
@@ -78,20 +103,30 @@ export const Topbar: React.FC<TopbarProps> = ({ title = 'Dashboard', subtitle })
           className="transition-colors"
         >
           <Bell size={18} aria-hidden="true" />
-          <span
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              width: '8px',
-              height: '8px',
-              borderRadius: 'var(--radius-full)',
-              backgroundColor: 'var(--tok-primary)',
-            }}
-          />
+          {unreadCount > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                minWidth: '18px',
+                height: '18px',
+                borderRadius: '999px',
+                backgroundColor: 'var(--tok-primary)',
+                color: 'var(--txt-inverse)',
+                fontSize: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0 4px',
+                fontWeight: 'var(--weight-medium)',
+              }}
+            >
+              {Math.min(unreadCount, 9)}
+            </span>
+          )}
         </button>
 
-        {/* Dark Mode Theme Toggle */}
         <ThemeToggle />
       </div>
     </header>

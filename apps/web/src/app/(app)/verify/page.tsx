@@ -34,13 +34,23 @@ export default function VerificationHubPage() {
     },
   ]
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSubmitted(true)
-    }, 1000)
+
+    const response = await fetch('/api/skills/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skillName,
+        githubUrl,
+        liveUrl,
+        leetcodeUsername: leetcode,
+      }),
+    })
+
+    setIsSubmitting(false)
+    setSubmitted(response.ok)
   }
 
   return (

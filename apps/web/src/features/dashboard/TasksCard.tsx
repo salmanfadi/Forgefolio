@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sparkles, CheckSquare, Square } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/Badge'
 
@@ -11,29 +11,21 @@ export interface TaskItem {
 }
 
 export const TasksCard: React.FC = () => {
-  const [tasks, setTasks] = useState<TaskItem[]>([
-    {
-      id: 't-1',
-      title: 'Review JS Event Loop microtasks vs macrotasks',
-      type: 'theory',
-      estimatedTime: '15 min',
-      completed: true,
-    },
-    {
-      id: 't-2',
-      title: 'Build custom memoization wrapper function with caching',
-      type: 'build',
-      estimatedTime: '30 min',
-      completed: false,
-    },
-    {
-      id: 't-3',
-      title: 'Practice 2 LeetCode Hash Table problems',
-      type: 'practice',
-      estimatedTime: '20 min',
-      completed: false,
-    },
-  ])
+  const [tasks, setTasks] = useState<TaskItem[]>([])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch('/api/ai/tasks?roadmapSlug=frontend-developer&stepSlug=fe-step-3', { signal: controller.signal })
+      .then((response) => response.json())
+      .then((payload) => {
+        const nextTasks = Array.isArray(payload?.data) ? payload.data : []
+        setTasks(nextTasks)
+      })
+      .catch(() => setTasks([]))
+
+    return () => controller.abort()
+  }, [])
 
   const toggleTask = (id: string) => {
     setTasks((prev) =>

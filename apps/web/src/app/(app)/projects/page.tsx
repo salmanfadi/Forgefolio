@@ -45,18 +45,35 @@ export default function ProjectsPage() {
     },
   ])
 
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!title) return
+
+    const response = await fetch('/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        description: desc,
+        repoUrl,
+        liveUrl,
+        aiQualityScore: 85,
+      }),
+    })
+
+    const payload = await response.json()
+    if (!response.ok || !payload?.data) return
+
     const newP = {
-      id: `proj-${Date.now()}`,
-      title,
-      description: desc,
-      repoUrl: repoUrl || null,
-      liveUrl: liveUrl || null,
-      aiQualityScore: 85,
-      createdAt: 'Just now',
+      id: payload.data.id,
+      title: payload.data.title,
+      description: payload.data.description,
+      repoUrl: payload.data.repoUrl,
+      liveUrl: payload.data.liveUrl,
+      aiQualityScore: payload.data.aiQualityScore,
+      createdAt: new Date(payload.data.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }),
     }
+
     setProjects([newP, ...projects])
     setShowAddModal(false)
     setTitle('')

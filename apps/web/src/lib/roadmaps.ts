@@ -90,3 +90,51 @@ export function calculateCompletionPercentage(completedSteps: number, totalSteps
   if (totalSteps <= 0) return 0
   return Math.round((Math.min(Math.max(completedSteps, 0), totalSteps) / totalSteps) * 100)
 }
+
+export type RoadmapProgressSummary = {
+  slug: string
+  userId: string
+  completedSteps: number
+  totalSteps: number
+  completionPercentage: number
+  completedStepIds: string[]
+}
+
+export const roadmapProgressStore = new Map<string, Set<string>>()
+
+export function getRoadmapProgress(slug: string, userId: string, roadmap: RoadmapContent): RoadmapProgressSummary {
+  const allStepIds = roadmap.modules.flatMap((module) => module.steps.map((step) => step.id))
+  const key = `${userId}:${slug}`
+  const completedStepIds = roadmapProgressStore.get(key) ?? new Set<string>()
+  const validCompletedStepIds = Array.from(completedStepIds).filter((stepId) => allStepIds.includes(stepId))
+
+  if (validCompletedStepIds.length !== completedStepIds.size) {
+    roadmapProgressStore.set(key, new Set(validCompletedStepIds))
+  }
+
+  const totalSteps = allStepIds.length
+  const completedSteps = validCompletedStepIds.length
+
+  return {
+    slug,
+    userId,
+    completedSteps,
+    totalSteps,
+    completionPercentage: calculateCompletionPercentage(completedSteps, totalSteps),
+    completedStepIds: validCompletedStepIds,
+  }
+}
+
+export function markRoadmapStepComplete(slug: string, userId: string, stepId: string, roadmap: RoadmapContent): RoadmapProgressSummary {
+  const allStepIds = roadmap.modules.flatMap((module) => module.steps.map((step) => step.id))
+  if (!allStepIds.includes(stepId)) {
+    throw new Error(`Step "${stepId}" does not exist in roadmap "${slug}".`)
+  }
+
+  const key = `${userId}:${slug}`
+  const completedStepIds = roadmapProgressStore.get(key) ?? new Set<string>()
+  completedStepIds.add(stepId)
+  roadmapProgressStore.set(key, completedStepIds)
+
+  return getRoadmapProgress(slug, userId, roadmap)
+}

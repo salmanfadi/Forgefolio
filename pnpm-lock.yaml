@@ -20,15 +20,15 @@ importers:
 
   apps/web:
     dependencies:
+      '@forgefolio/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@forgefolio/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@prisma/client':
         specifier: ^5.12.0
         version: 5.22.0(prisma@5.22.0)
-      '@skillpath/db':
-        specifier: workspace:*
-        version: link:../../packages/db
-      '@skillpath/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       clsx:
         specifier: ^2.1.0
         version: 2.1.1
@@ -78,10 +78,10 @@ importers:
 
   apps/workers:
     dependencies:
-      '@skillpath/db':
+      '@forgefolio/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@skillpath/types':
+      '@forgefolio/types':
         specifier: workspace:*
         version: link:../../packages/types
       bullmq:

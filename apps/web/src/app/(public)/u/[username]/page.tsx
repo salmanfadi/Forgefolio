@@ -51,8 +51,22 @@ export default function SkillPassportPage() {
     isPublic: true,
   }
 
-  const handleSendContact = (e: React.FormEvent) => {
+  const handleSendContact = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    const response = await fetch(`/api/contact/${encodeURIComponent(username)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: contactMessage,
+        isReferralIntent,
+      }),
+    })
+
+    if (!response.ok) {
+      return
+    }
+
     setSentSuccess(true)
     setTimeout(() => {
       setSentSuccess(false)
