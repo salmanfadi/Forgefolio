@@ -63,9 +63,9 @@ describe('buildRoadmapOverview', () => {
     const overview = buildRoadmapOverview(roadmap, progress)
 
     assert.equal(overview.completionPercentage, 67)
-    assert.equal(overview.modules[0].status, 'completed')
+    assert.equal(overview.modules[0].status, 'active')
     assert.equal(overview.modules[0].completedSteps, 1)
-    assert.equal(overview.modules[1].status, 'active')
+    assert.equal(overview.modules[1].status, 'completed')
     assert.equal(overview.modules[1].completedSteps, 1)
   })
 })

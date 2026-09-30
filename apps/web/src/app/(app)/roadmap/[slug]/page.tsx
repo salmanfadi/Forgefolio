@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
@@ -8,6 +8,7 @@ import { Button } from '@/shared/components/ui/Button'
 import { Badge } from '@/shared/components/ui/Badge'
 import { ProgressBar } from '@/shared/components/ui/ProgressBar'
 import { CheckCircle2, PlayCircle, Lock, ArrowRight, BookOpen, Code } from 'lucide-react'
+import type { RoadmapContent, RoadmapProgressSummary } from '@/lib/roadmaps'
 
 type RoadmapStep = {
   id: string
@@ -24,45 +25,111 @@ type RoadmapModule = {
   steps: RoadmapStep[]
 }
 
+type DefaultRoadmapPageData = {
+  title: string
+  description: string
+  modules: RoadmapModule[]
+}
+
+const defaultRoadmap: DefaultRoadmapPageData = {
+  title: 'Frontend Engineering Roadmap',
+  description: 'Master modern HTML/CSS, JavaScript ES6+, React, Next.js, TypeScript, state management, web performance, and responsive UI design.',
+  modules: [
+    {
+      id: 'fe-mod-1',
+      title: 'Module 1: Web Fundamentals (HTML5, CSS3, Flexbox & Grid)',
+      steps: [
+        { id: 'fe-step-1', title: 'Semantic HTML5 & Accessibility (WCAG 2.2)', type: 'theory', completed: true },
+        { id: 'fe-step-2', title: 'CSS3 Layouts: Flexbox & Grid Deep Dive', type: 'practice', completed: true },
+      ],
+    },
+    {
+      id: 'fe-mod-2',
+      title: 'Module 2: Modern JavaScript (ES6+)',
+      steps: [
+        { id: 'fe-step-3', title: 'JavaScript: Closures, Scope & Execution Context', type: 'build', completed: false, isNext: true },
+        { id: 'fe-step-4', title: 'Asynchronous JS: Promises, Async/Await & Event Loop', type: 'theory', completed: false },
+      ],
+    },
+    {
+      id: 'fe-mod-3',
+      title: 'Module 3: React & Next.js App Router',
+      steps: [
+        { id: 'fe-step-5', title: 'React Server Components & Next.js 14 Fundamentals', type: 'build', completed: false, locked: true },
+      ],
+    },
+  ],
+}
+
 export default function RoadmapDetailPage() {
   const params = useParams()
-  const slug = params?.slug as string || 'frontend-developer'
+  const slug = (params?.slug as string) || 'frontend-developer'
+  const [roadmapContent, setRoadmapContent] = useState<RoadmapContent | null>(null)
+  const [progress, setProgress] = useState<RoadmapProgressSummary | null>(null)
 
-  const roadmapData: { title: string; description: string; modules: RoadmapModule[] } = {
-    title: 'Frontend Engineering Roadmap',
-    description: 'Master modern HTML/CSS, JavaScript ES6+, React, Next.js, TypeScript, state management, web performance, and responsive UI design.',
-    modules: [
-      {
-        id: 'fe-mod-1',
-        title: 'Module 1: Web Fundamentals (HTML5, CSS3, Flexbox & Grid)',
-        steps: [
-          { id: 'fe-step-1', title: 'Semantic HTML5 & Accessibility (WCAG 2.2)', type: 'theory', completed: true },
-          { id: 'fe-step-2', title: 'CSS3 Layouts: Flexbox & Grid Deep Dive', type: 'practice', completed: true },
-        ],
-      },
-      {
-        id: 'fe-mod-2',
-        title: 'Module 2: Modern JavaScript (ES6+)',
-        steps: [
-          { id: 'fe-step-3', title: 'JavaScript: Closures, Scope & Execution Context', type: 'build', completed: false, isNext: true },
-          { id: 'fe-step-4', title: 'Asynchronous JS: Promises, Async/Await & Event Loop', type: 'theory', completed: false },
-        ],
-      },
-      {
-        id: 'fe-mod-3',
-        title: 'Module 3: React & Next.js App Router',
-        steps: [
-          { id: 'fe-step-5', title: 'React Server Components & Next.js 14 Fundamentals', type: 'build', completed: false, locked: true },
-        ],
-      },
-    ],
-  }
+  useEffect(() => {
+    const controller = new AbortController()
+
+    Promise.all([
+      fetch(`/api/roadmaps/${slug}`, { signal: controller.signal }),
+      fetch(`/api/roadmaps/${slug}/progress?userId=learner-123`, { signal: controller.signal }),
+    ])
+      .then(async ([roadmapResponse, progressResponse]) => {
+        const roadmapPayload = await roadmapResponse.json()
+        const progressPayload = await progressResponse.json()
+
+        if (roadmapPayload?.data) {
+          setRoadmapContent(roadmapPayload.data as RoadmapContent)
+        }
+
+        if (progressPayload?.data) {
+          setProgress(progressPayload.data as RoadmapProgressSummary)
+        }
+      })
+      .catch(() => {
+        setRoadmapContent(null)
+        setProgress(null)
+      })
+
+    return () => controller.abort()
+  }, [slug])
+
+  const roadmapData = useMemo(() => {
+    if (!roadmapContent) return defaultRoadmap
+
+    const completedSet = new Set(progress?.completedStepIds ?? [])
+
+    return {
+      title: roadmapContent.title,
+      description: roadmapContent.description,
+      modules: roadmapContent.modules.map((module) => ({
+        id: module.id,
+        title: module.title,
+        steps: module.steps.map((step) => {
+          const practicalType = step.practicalContent[0]?.type ?? 'practice'
+          const type = practicalType === 'build' ? 'build' : practicalType === 'practice' ? 'practice' : 'theory'
+          const completed = completedSet.has(step.id)
+
+          return {
+            id: step.id,
+            title: step.title,
+            type,
+            completed,
+            isNext: !completed && step.orderIndex === 1,
+            locked: false,
+          }
+        }),
+      })),
+    }
+  }, [progress, roadmapContent])
+
+  const completionPercentage = progress?.completionPercentage ?? 60
+  const completedCount = progress?.completedSteps ?? 2
+  const totalCount = progress?.totalSteps ?? 5
 
   return (
     <AppLayout title={roadmapData.title} subtitle="Complete step-by-step module breakdown">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-24)' }}>
-        
-        {/* Top Overview Box */}
         <div
           style={{
             backgroundColor: 'var(--bg-surface)',
@@ -80,15 +147,14 @@ export default function RoadmapDetailPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-8)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--type-xs)', color: 'var(--txt-secondary)' }}>
               <span>Completion Status</span>
-              <span style={{ fontWeight: 'var(--weight-medium)', color: 'var(--txt-primary)' }}>60% Completed (2 of 5 Steps)</span>
+              <span style={{ fontWeight: 'var(--weight-medium)', color: 'var(--txt-primary)' }}>{completionPercentage}% Completed ({completedCount} of {totalCount} Steps)</span>
             </div>
-            <ProgressBar value={60} size="md" label="Roadmap Completion" />
+            <ProgressBar value={completionPercentage} size="md" label="Roadmap Completion" />
           </div>
         </div>
 
-        {/* Modules Accordion / List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-24)' }}>
-          {roadmapData.modules.map((m, mIdx) => (
+          {roadmapData.modules.map((m) => (
             <div
               key={m.id}
               style={{

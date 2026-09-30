@@ -100,6 +100,53 @@ export type RoadmapProgressSummary = {
   completedStepIds: string[]
 }
 
+export type RoadmapModuleOverview = {
+  id: string
+  title: string
+  completedSteps: number
+  totalSteps: number
+  status: 'completed' | 'active' | 'locked'
+}
+
+export type RoadmapOverviewSummary = {
+  slug: string
+  title: string
+  description: string
+  completionPercentage: number
+  modules: RoadmapModuleOverview[]
+}
+
+export function buildRoadmapOverview(roadmap: RoadmapContent, progress: RoadmapProgressSummary): RoadmapOverviewSummary {
+  const completedSet = new Set(progress.completedStepIds)
+
+  return {
+    slug: roadmap.slug,
+    title: roadmap.title,
+    description: roadmap.description,
+    completionPercentage: progress.completionPercentage,
+    modules: roadmap.modules.map((module, index) => {
+      const stepIds = module.steps.map((step) => step.id)
+      const completedSteps = stepIds.filter((stepId) => completedSet.has(stepId)).length
+      const totalSteps = stepIds.length
+
+      let status: RoadmapModuleOverview['status'] = 'locked'
+      if (completedSteps === totalSteps) {
+        status = 'completed'
+      } else if (completedSteps > 0 || index === 0) {
+        status = 'active'
+      }
+
+      return {
+        id: module.id,
+        title: module.title,
+        completedSteps,
+        totalSteps,
+        status,
+      }
+    }),
+  }
+}
+
 export const roadmapProgressStore = new Map<string, Set<string>>()
 
 export function getRoadmapProgress(slug: string, userId: string, roadmap: RoadmapContent): RoadmapProgressSummary {
