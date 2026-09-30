@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import type { ApiResponse } from '@forgefolio/types'
-import { getRoadmap, type RoadmapContent } from '@/lib/roadmaps'
+import { getRoadmap } from '@/lib/roadmap-content.server'
+import type { RoadmapContent } from '@/lib/roadmaps'
 
 const RouteParamsSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),

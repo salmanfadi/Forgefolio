@@ -7,7 +7,7 @@ import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { Button } from '@/shared/components/ui/Button'
 import { Badge } from '@/shared/components/ui/Badge'
 import { ProgressBar } from '@/shared/components/ui/ProgressBar'
-import { CheckCircle2, PlayCircle, Lock, ArrowRight, BookOpen, Code } from 'lucide-react'
+import {CheckCircle2, PlayCircle, Lock, ArrowRight} from 'lucide-react'
 import type { RoadmapContent, RoadmapProgressSummary } from '@/lib/roadmaps'
 
 type RoadmapStep = {

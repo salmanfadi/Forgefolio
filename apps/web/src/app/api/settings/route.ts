@@ -5,7 +5,7 @@ import type { ApiResponse } from '@forgefolio/types'
 const SettingsSchema = z.object({
   userId: z.string().min(1).optional(),
   name: z.string().min(2).max(80),
-  username: z.string().min(2).max(40).regex(/^[a-z0-9_\-]+$/i),
+  username: z.string().min(2).max(40).regex(/^[a-z0-9_-]+$/i),
   bio: z.string().min(5).max(200).optional().or(z.literal('')),
   avatarUrl: z.string().url().optional().or(z.literal('')),
   isPublic: z.boolean().optional(),

@@ -9,7 +9,7 @@ const ContactSchema = z.object({
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { learnerId: string } }
+  { params: _params }: { params: { learnerId: string } }
 ) {
   try {
     const json = await req.json()

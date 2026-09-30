@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { ShieldCheck, Compass, CheckCircle2, Users, ArrowRight, BookOpen, Code2, Award } from 'lucide-react'
+import {ShieldCheck, Compass, Users, ArrowRight, BookOpen, Code2, Award} from 'lucide-react'
 import { Button } from '@/shared/components/ui/Button'
 import { Badge } from '@/shared/components/ui/Badge'
 import { ThemeToggle } from '@/shared/components/layout/ThemeToggle'

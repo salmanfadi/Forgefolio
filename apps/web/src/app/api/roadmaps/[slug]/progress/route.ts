@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import type { ApiResponse } from '@forgefolio/types'
-import { getRoadmap, getRoadmapProgress, markRoadmapStepComplete, type RoadmapProgressSummary } from '@/lib/roadmaps'
+import { getRoadmap } from '@/lib/roadmap-content.server'
+import {
+  ProgressPersistenceError,
+  getRoadmapProgressForUser,
+  markRoadmapStepCompleteForUser,
+  type RoadmapProgressSummary,
+} from '@/lib/progress'
 
 const ProgressRequestSchema = z.object({
   stepId: z.string().min(1, 'Step ID is required.'),
@@ -29,10 +35,16 @@ export async function POST(request: NextRequest, { params }: { params: { slug: s
   }
 
   try {
-    const progress = markRoadmapStepComplete(slug, body.data.userId, body.data.stepId, roadmap)
+    const progress = await markRoadmapStepCompleteForUser(slug, body.data.userId, body.data.stepId, roadmap)
 
     return NextResponse.json<ApiResponse<RoadmapProgressSummary>>({ data: progress })
   } catch (error) {
+    if (error instanceof ProgressPersistenceError) {
+      return NextResponse.json<ApiResponse<null>>(
+        { error: { code: error.code, message: error.message } },
+        { status: 400 }
+      )
+    }
     return NextResponse.json<ApiResponse<null>>(
       { error: { code: 'INVALID_STEP', message: error instanceof Error ? error.message : 'Step is invalid for this roadmap.' } },
       { status: 400 }
@@ -59,7 +71,7 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
     )
   }
 
-  const progress = getRoadmapProgress(params.slug, userId, roadmap)
+  const progress = await getRoadmapProgressForUser(params.slug, userId, roadmap)
 
   return NextResponse.json<ApiResponse<RoadmapProgressSummary>>({ data: progress })
 }

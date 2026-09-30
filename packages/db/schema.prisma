@@ -87,6 +87,7 @@ model Module {
 
 model Step {
   id               String         @id @default(cuid())
+  contentId        String?        @unique // step id from the roadmap JSON in content/roadmaps
   moduleId         String
   title            String
   theoryContent    Json           // Array of { type, title, url, description }

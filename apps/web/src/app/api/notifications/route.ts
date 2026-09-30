@@ -8,13 +8,13 @@ const NotificationSchema = z.object({
   message: z.string().min(3).max(500),
 })
 
-const NotificationRecordSchema = NotificationSchema.extend({
+const _NotificationRecordSchema = NotificationSchema.extend({
   id: z.string().min(1),
   read: z.boolean().default(false),
   createdAt: z.string().datetime().default(new Date().toISOString()),
 })
 
-export type NotificationRecord = z.infer<typeof NotificationRecordSchema>
+export type NotificationRecord = z.infer<typeof _NotificationRecordSchema>
 
 const fallbackNotifications: NotificationRecord[] = [
   {

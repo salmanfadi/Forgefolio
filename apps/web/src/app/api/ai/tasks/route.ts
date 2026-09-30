@@ -4,7 +4,7 @@ import type { ApiResponse } from '@forgefolio/types'
 
 const TaskType = z.enum(['theory', 'build', 'practice'])
 
-export const DailyTaskSchema = z.object({
+const DailyTaskSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
   type: TaskType,
@@ -21,7 +21,7 @@ const QuerySchema = z.object({
 type DailyTask = z.infer<typeof DailyTaskSchema>
 type DailyTaskType = DailyTask['type']
 
-const fallbackTasks: DailyTask[] = [
+const _fallbackTasks: DailyTask[] = [
   {
     id: 'daily-1',
     title: 'Review JavaScript event loop microtasks vs macrotasks',

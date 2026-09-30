@@ -113,7 +113,6 @@ export async function GET(req: NextRequest) {
     return b.score - a.score
   })
 
-  const total = filtered.length
   const start = (page - 1) * pageSize
   const paged = filtered.slice(start, start + pageSize)
 

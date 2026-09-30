@@ -13,23 +13,23 @@ Complete once before writing any feature code.
 - [x] Create `apps/workers` (Node.js + TypeScript worker process)
 - [x] Create `packages/db` (Prisma schema)
 - [x] Create `packages/types` (shared TypeScript types)
-- [ ] Configure shared `tsconfig.json`, `eslint.config.js`, `prettier.config.js`
-- [ ] Set up Tailwind CSS + shadcn/ui in `apps/web`
-- [ ] Initialise PostgreSQL database (Neon or Supabase)
-- [ ] Run `prisma migrate dev --name init` with full schema
-- [ ] Set up Redis instance (Upstash)
+- [x] Configure shared `tsconfig.json`, `eslint.config.js`, `prettier.config.js`
+- [x] Set up Tailwind CSS + shadcn/ui in `apps/web`
+- [x] Initialise PostgreSQL database (Neon or Supabase)
+- [x] Run `prisma migrate dev --name init` with full schema
+- [x] Set up Redis instance (Upstash)
 - [ ] Configure Auth.js v5 with Google + GitHub providers
-- [ ] Set up all environment variables (`.env.example` committed, `.env` git-ignored)
+- [x] Set up all environment variables (`.env.example` committed, `.env` git-ignored)
 - [ ] Configure Resend email with verified domain
 - [ ] Configure Cloudflare R2 bucket
 - [ ] Set up Vercel project linked to GitHub repo
 - [ ] Set up Railway/Render service for workers
 - [x] Create `content/roadmaps/` directory with at least one complete roadmap JSON
-- [ ] Configure GitHub Actions CI: lint → type-check → test → build
-- [ ] Add `pnpm audit` step to CI
-- [ ] Enable Dependabot for dependency updates
-- [ ] Create GitHub issue templates (bug, feature, roadmap-contribution)
-- [ ] Add `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `LICENSE` to root
+- [x] Configure GitHub Actions CI: lint → type-check → test → build
+- [x] Add `pnpm audit` step to CI
+- [x] Enable Dependabot for dependency updates
+- [x] Create GitHub issue templates (bug, feature, roadmap-contribution)
+- [x] Add `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `LICENSE` to root
 
 ---
 
@@ -63,17 +63,17 @@ Complete once before writing any feature code.
 
 - [x] Roadmap JSON schema defined and validated with Zod
 - [x] All 5 roadmaps (Frontend, Backend, Data Analyst, Data Scientist, DevOps) authored and validated
-- [ ] Roadmap seed script (`prisma/seed.ts`) inserts all roadmaps
+- [x] Roadmap seed script (`prisma/seed.ts`) inserts all roadmaps
 - [x] `/roadmap/[slug]` page renders modules and steps
 - [x] Step detail view: theory resources + practical exercises displayed
-- [ ] `POST /api/roadmaps/[slug]/progress` marks a step complete
-- [ ] Progress saved per user per step (`UserProgress`)
-- [ ] Module completion % computed correctly
-- [ ] Overall roadmap completion % computed correctly
-- [ ] Progress bar component renders accurately
-- [ ] Steps cannot be double-marked (idempotent endpoint)
-- [ ] Roadmap contribution submission form working
-- [ ] Contributions stored in DB with `OPEN` status
+- [x] `POST /api/roadmaps/[slug]/progress` marks a step complete
+- [x] Progress saved per user per step (`UserProgress`)
+- [x] Module completion % computed correctly
+- [x] Overall roadmap completion % computed correctly
+- [x] Progress bar component renders accurately
+- [x] Steps cannot be double-marked (idempotent endpoint)
+- [x] Roadmap contribution submission form working
+- [x] Contributions stored in DB with `OPEN` status
 - [ ] Mentor+ can approve/reject contributions
 - [ ] Approved contributions applied to roadmap content
 
@@ -92,7 +92,7 @@ Complete once before writing any feature code.
 - [x] All profile sections render: skills, projects, scores, badges
 - [ ] Learner can add/edit projects (title, description, repo URL, live URL)
 - [ ] GitHub and LeetCode username fields linkable from profile
-- [ ] Employability Score displayed with breakdown chart
+- [x] Employability Score displayed with breakdown chart
 - [ ] Roadmap completion % shown on passport
 - [ ] Open Graph meta tags generated dynamically per profile
 - [ ] Profile share link copies to clipboard
@@ -214,7 +214,7 @@ Complete once before writing any feature code.
 - [ ] Directory only shows `isPublic = true` learners
 - [ ] Directory filter: target role, min employability score, skill, roadmap %
 - [ ] Directory sort: employability score, completion, verified skill count
-- [ ] Pagination: 20 cards per page
+- [x] Pagination: 20 cards per page
 - [x] Learner card: name, role, score, top 5 skills, completion %, profile link
 - [x] No email/contact info on directory cards
 - [ ] Contact button on learner profile visible only to logged-in verified professionals
@@ -306,16 +306,16 @@ See `legal.md` for full details. Summary checklist:
 
 ## 15. Open Source Community Checklist
 
-- [ ] `README.md` with clear project description, screenshots, local setup in < 5 steps
-- [ ] `CONTRIBUTING.md` with: code style, branch naming, PR template, review process
-- [ ] `CODE_OF_CONDUCT.md` (Contributor Covenant recommended)
-- [ ] `LICENSE` file (MIT or Apache 2.0)
-- [ ] GitHub issue templates: Bug Report, Feature Request, Roadmap Contribution
-- [ ] PR template with checklist (tests, docs, changelog)
-- [ ] `CHANGELOG.md` updated on every release
+- [x] `README.md` with clear project description, screenshots, local setup in < 5 steps
+- [x] `CONTRIBUTING.md` with: code style, branch naming, PR template, review process
+- [x] `CODE_OF_CONDUCT.md` (Contributor Covenant recommended)
+- [x] `LICENSE` file (MIT or Apache 2.0)
+- [x] GitHub issue templates: Bug Report, Feature Request, Roadmap Contribution
+- [x] PR template with checklist (tests, docs, changelog)
+- [x] `CHANGELOG.md` updated on every release
 - [ ] GitHub Discussions enabled for community Q&A
 - [ ] GitHub Projects board for public roadmap visibility
 - [ ] First-time contributor label + "good first issue" labels on suitable issues
 - [ ] Local dev setup tested on macOS, Linux, and WSL2 Windows
 - [x] `docker-compose.yml` for local PostgreSQL + Redis (no cloud signup needed to run locally)
-- [ ] `prisma/seed.ts` with demo data so new contributors see a working app immediately
+- [x] `prisma/seed.ts` with demo data so new contributors see a working app immediately

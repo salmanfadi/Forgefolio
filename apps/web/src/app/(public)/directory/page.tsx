@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ShieldCheck, Search, Filter, Mail, Award, CheckCircle2, ArrowRight } from 'lucide-react'
+import {ShieldCheck, ArrowRight} from 'lucide-react'
 import { Avatar } from '@/shared/components/ui/Avatar'
 import { Badge } from '@/shared/components/ui/Badge'
 import { Button } from '@/shared/components/ui/Button'
@@ -16,7 +16,7 @@ export default function ReferralDirectoryPage() {
   const [minScore, setMinScore] = useState(70)
   const [sort, setSort] = useState<'score' | 'completion' | 'verified'>('score')
   const [candidates, setCandidates] = useState<DirectoryCandidate[]>([])
-  const [page, setPage] = useState(1)
+  const [page] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

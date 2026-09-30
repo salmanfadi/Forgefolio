@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ShieldCheck, CheckCircle2, Award, Github, ExternalLink, Mail, ArrowLeft, MessageSquare, Lock } from 'lucide-react'
+import {ShieldCheck, Award, Mail, Lock} from 'lucide-react'
 import { Avatar } from '@/shared/components/ui/Avatar'
 import { Badge } from '@/shared/components/ui/Badge'
 import { Button } from '@/shared/components/ui/Button'

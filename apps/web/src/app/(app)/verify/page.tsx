@@ -5,7 +5,7 @@ import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { Button } from '@/shared/components/ui/Button'
 import { Input } from '@/shared/components/ui/Input'
 import { Badge } from '@/shared/components/ui/Badge'
-import { CheckCircle2, ShieldCheck, Github, ExternalLink, Clock, Sparkles, UserCheck } from 'lucide-react'
+import {CheckCircle2, ShieldCheck} from 'lucide-react'
 
 export default function VerificationHubPage() {
   const [skillName, setSkillName] = useState('React.js & State Management')

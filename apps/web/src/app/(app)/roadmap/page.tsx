@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { Button } from '@/shared/components/ui/Button'
 import { Badge } from '@/shared/components/ui/Badge'
-import { Compass, ArrowRight, Layers, Clock } from 'lucide-react'
+import {ArrowRight, Layers, Clock} from 'lucide-react'
 
 export default function RoadmapsListPage() {
   const roadmaps = [

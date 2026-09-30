@@ -1,14 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { AppLayout } from '@/shared/components/layout/AppLayout'
 import { Button } from '@/shared/components/ui/Button'
-import { Badge } from '@/shared/components/ui/Badge'
 import { BookOpen, Code, CheckCircle2, ExternalLink, Sparkles, MessageSquare, ArrowLeft } from 'lucide-react'
 
 export default function StepDetailPage() {
-  const params = useParams()
   const router = useRouter()
   const [completed, setCompleted] = useState(false)
   const [showAiMentor, setShowAiMentor] = useState(false)

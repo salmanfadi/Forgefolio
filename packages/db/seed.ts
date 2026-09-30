@@ -195,7 +195,14 @@ async function main() {
     'devops-engineer',
   ]
 
-  const rootContentPath = path.join(process.cwd(), 'content', 'roadmaps')
+  // Resolve content/roadmaps from the monorepo root regardless of the process cwd.
+  const contentCandidates = [
+    path.join(process.cwd(), 'content', 'roadmaps'),
+    path.join(process.cwd(), '..', 'content', 'roadmaps'),
+    path.join(process.cwd(), '..', '..', 'content', 'roadmaps'),
+  ]
+  const rootContentPath =
+    contentCandidates.find((candidate) => fs.existsSync(candidate)) ?? contentCandidates[0]
   const createdStepIds: string[] = []
 
   for (const dirName of roadmapDirs) {
@@ -230,6 +237,7 @@ async function main() {
           for (const step of mod.steps) {
             const stepRecord = await prisma.step.create({
               data: {
+                contentId: step.id,
                 moduleId: moduleRecord.id,
                 title: step.title,
                 theoryContent: step.theoryContent || [],
