@@ -1,18 +1,26 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import type { ApiResponse } from '@forgefolio/types'
+import { evaluateBadges } from '@/lib/gamification'
 
 const GamificationSchema = z.object({
   userId: z.string().min(1),
   xp: z.number().min(0).max(5000).optional(),
   streak: z.number().int().min(0).max(365).optional(),
   badge: z.string().min(2).max(80).optional(),
+  projectCount: z.number().int().min(0).max(50).optional(),
+  mentorVerifiedSkillCount: z.number().int().min(0).max(20).optional(),
+  approvedContributions: z.number().int().min(0).max(50).optional(),
+  mentorApprovedReviews: z.number().int().min(0).max(50).optional(),
 })
 
-const summary = {
+const baseSummary = {
   xp: 1450,
   streak: 5,
-  badges: ['First Project', 'First Verification', 'Mentor Approved', '5-Day Streak'],
+  projectCount: 1,
+  mentorVerifiedSkillCount: 1,
+  approvedContributions: 1,
+  mentorApprovedReviews: 1,
   leaderboard: [
     { name: 'Alex Sharma', xp: 1450 },
     { name: 'Priya Verma', xp: 1380 },
@@ -33,7 +41,25 @@ export async function GET(request: Request) {
     )
   }
 
-  return NextResponse.json<ApiResponse<typeof summary>>({ data: summary })
+  const xp = parsed.data.xp ?? baseSummary.xp
+  const streak = parsed.data.streak ?? baseSummary.streak
+  const badges = evaluateBadges({
+    xp,
+    streak,
+    projectCount: parsed.data.projectCount ?? baseSummary.projectCount,
+    mentorVerifiedSkillCount: parsed.data.mentorVerifiedSkillCount ?? baseSummary.mentorVerifiedSkillCount,
+    approvedContributions: parsed.data.approvedContributions ?? baseSummary.approvedContributions,
+    mentorApprovedReviews: parsed.data.mentorApprovedReviews ?? baseSummary.mentorApprovedReviews,
+  })
+
+  return NextResponse.json<ApiResponse<{ xp: number; streak: number; badges: string[]; leaderboard: Array<{ name: string; xp: number }> }>>({
+    data: {
+      xp,
+      streak,
+      badges,
+      leaderboard: baseSummary.leaderboard,
+    },
+  })
 }
 
 export async function POST(request: Request) {
@@ -46,11 +72,22 @@ export async function POST(request: Request) {
     )
   }
 
+  const xp = parsed.data.xp ?? baseSummary.xp
+  const streak = parsed.data.streak ?? baseSummary.streak
+  const badges = evaluateBadges({
+    xp,
+    streak,
+    projectCount: parsed.data.projectCount ?? baseSummary.projectCount,
+    mentorVerifiedSkillCount: parsed.data.mentorVerifiedSkillCount ?? baseSummary.mentorVerifiedSkillCount,
+    approvedContributions: parsed.data.approvedContributions ?? baseSummary.approvedContributions,
+    mentorApprovedReviews: parsed.data.mentorApprovedReviews ?? baseSummary.mentorApprovedReviews,
+  })
+
   const result = {
     userId: parsed.data.userId,
-    xp: parsed.data.xp ?? summary.xp,
-    streak: parsed.data.streak ?? summary.streak,
-    badge: parsed.data.badge ?? summary.badges[0],
+    xp,
+    streak,
+    badges,
     updatedAt: new Date().toISOString(),
   }
 

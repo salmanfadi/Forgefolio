@@ -32,14 +32,18 @@ export default function MentorsPage() {
       .catch(() => setItems([]))
   }, [domain])
 
+  const pendingCount = items.filter((item) => item.status === 'PENDING' || item.status === 'AI_REVIEW').length
+  const completedCount = items.filter((item) => item.status === 'COMPLETED').length
+  const challengeCount = items.filter((item) => item.status === 'CHALLENGE_ISSUED').length
+
   return (
     <AppLayout title="Mentor Review Queue" subtitle="Review verification requests, issue challenges, and track completed approvals">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-24)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--sp-16)' }}>
           <div style={{ display: 'flex', gap: 'var(--sp-12)', flexWrap: 'wrap' }}>
-            <Badge variant="info">12 Pending</Badge>
-            <Badge variant="success">8 Completed</Badge>
-            <Badge variant="warning">3 Challenges Issued</Badge>
+            <Badge variant="info">{pendingCount} Pending</Badge>
+            <Badge variant="success">{completedCount} Completed</Badge>
+            <Badge variant="warning">{challengeCount} Challenges Issued</Badge>
           </div>
 
           <select

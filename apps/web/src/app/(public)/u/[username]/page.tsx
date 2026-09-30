@@ -17,6 +17,7 @@ export default function SkillPassportPage() {
   const [contactMessage, setContactMessage] = useState('')
   const [isReferralIntent, setIsReferralIntent] = useState(true)
   const [sentSuccess, setSentSuccess] = useState(false)
+  const [copyStatus, setCopyStatus] = useState('Copy link')
 
   const learner = {
     name: 'Alex Sharma',
@@ -49,6 +50,22 @@ export default function SkillPassportPage() {
     ],
     badges: ['First Project', 'First Verification', 'Mentor Approved', '5-Day Streak'],
     isPublic: true,
+    showReferralTab: true,
+  }
+
+  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/u/${encodeURIComponent(username)}` : ''
+
+  const handleShare = async () => {
+    if (!shareUrl) return
+
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setCopyStatus('Copied!')
+      setTimeout(() => setCopyStatus('Copy link'), 1200)
+    } catch {
+      setCopyStatus('Copy unavailable')
+      setTimeout(() => setCopyStatus('Copy link'), 1200)
+    }
   }
 
   const handleSendContact = async (e: React.FormEvent) => {
@@ -169,38 +186,45 @@ export default function SkillPassportPage() {
               <span style={{ fontSize: 'var(--type-xs)', color: 'var(--txt-secondary)' }}>SCORE</span>
             </div>
 
-            <Button
-              variant="primary"
-              icon={<Mail size={16} />}
-              onClick={() => setShowContactModal(true)}
-            >
-              Contact for Referral
+            {learner.showReferralTab && (
+              <Button
+                variant="primary"
+                icon={<Mail size={16} />}
+                onClick={() => setShowContactModal(true)}
+              >
+                Contact for Referral
+              </Button>
+            )}
+            <Button variant="secondary" onClick={handleShare}>
+              {copyStatus}
             </Button>
           </div>
         </section>
 
         {/* Profile Tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--border-subtle)', gap: 'var(--sp-24)' }}>
-          {(['overview', 'projects', 'skills', 'referral'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                minHeight: '44px',
-                padding: '0 var(--sp-16)',
-                background: 'none',
-                border: 'none',
-                borderBottom: activeTab === tab ? '3px solid var(--tok-primary)' : '3px solid transparent',
-                color: activeTab === tab ? 'var(--txt-accent)' : 'var(--txt-secondary)',
-                fontWeight: activeTab === tab ? 'var(--weight-medium)' : 'var(--weight-normal)',
-                fontSize: 'var(--type-sm)',
-                cursor: 'pointer',
-                textTransform: 'capitalize',
-              }}
-            >
-              {tab === 'referral' ? 'Referral Circle' : tab}
-            </button>
-          ))}
+          {(['overview', 'projects', 'skills', 'referral'] as const)
+            .filter((tab) => tab !== 'referral' || learner.showReferralTab)
+            .map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  minHeight: '44px',
+                  padding: '0 var(--sp-16)',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: activeTab === tab ? '3px solid var(--tok-primary)' : '3px solid transparent',
+                  color: activeTab === tab ? 'var(--txt-accent)' : 'var(--txt-secondary)',
+                  fontWeight: activeTab === tab ? 'var(--weight-medium)' : 'var(--weight-normal)',
+                  fontSize: 'var(--type-sm)',
+                  cursor: 'pointer',
+                  textTransform: 'capitalize',
+                }}
+              >
+                {tab === 'referral' ? 'Referral Circle' : tab}
+              </button>
+            ))}
         </div>
 
         {/* Tab Content */}

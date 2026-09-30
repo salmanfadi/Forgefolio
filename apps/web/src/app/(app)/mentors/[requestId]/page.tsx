@@ -27,6 +27,7 @@ export default function MentorReviewDetailPage() {
   const [item, setItem] = useState<ReviewDetail | null>(null)
   const [feedback, setFeedback] = useState('Strong portfolio, concise architecture notes, and a clear GitHub trail. This is a strong mentor verification candidate.')
   const [challengeDescription, setChallengeDescription] = useState('Build a reusable async memoization utility and explain trade-offs in the code.')
+  const [decisionSummary, setDecisionSummary] = useState<string | null>(null)
 
   useEffect(() => {
     if (!requestId) return
@@ -49,6 +50,9 @@ export default function MentorReviewDetailPage() {
     })
 
     if (response.ok) {
+      const payload = await response.json()
+      const actionLabel = action === 'accept' ? 'Accepted' : action === 'reject' ? 'Rejected' : 'Challenge issued'
+      setDecisionSummary(`${actionLabel}: ${payload?.data?.mentorFeedback ?? feedback}`)
       router.push('/mentors')
     }
   }
@@ -100,6 +104,12 @@ export default function MentorReviewDetailPage() {
             onChange={(event) => setChallengeDescription(event.target.value)}
             style={{ borderRadius: 'var(--radius-md)', border: '1px solid var(--border-default)', padding: 'var(--sp-12)', fontFamily: 'inherit', fontSize: 'var(--type-sm)', backgroundColor: 'var(--bg-base)', color: 'var(--txt-primary)' }}
           />
+
+          {decisionSummary && (
+            <div style={{ padding: 'var(--sp-12)', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--tok-success-bg)', color: 'var(--txt-success)', fontSize: 'var(--type-sm)' }}>
+              {decisionSummary}
+            </div>
+          )}
 
           <div style={{ display: 'flex', gap: 'var(--sp-12)', flexWrap: 'wrap' }}>
             <Button variant="primary" onClick={() => handleAction('accept')}>Accept</Button>
